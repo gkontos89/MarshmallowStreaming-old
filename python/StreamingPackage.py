@@ -3,10 +3,9 @@ Base class that describes how to scrape cable streaming information for each pro
 """
 
 
-class ScrapeInstructions:
-    def __init__(self, provider_name):
-        # provider information
-        self.provider_name = provider_name
+class StreamingPackage:
+    def __init__(self, name):
+        self.name = name
         self.price = None
         self.channels = {}
         self.num_simultaneous_streams = None
@@ -45,19 +44,18 @@ class ScrapeInstructions:
         self.scrape_for_num_profiles()
         self.scrape_for_support_devices()
         self.scrape_for_dvr_info()
-        return self.get_fire_base_format()
+        return self.to_json()
 
-    def get_fire_base_format(self):
-        info = {
-            self.provider_name: {
-                'pricePerMonth': self.price,
-                'channels': self.channels,
-                'additionalChannels': self.additional_channels,
-                'numSimultaneousStreams': self.num_simultaneous_streams,
-                'numProfiles': self.num_profiles,
-                'supportedDevices': self.supported_devices,
-                'dvrSupport': self.dvr_support,
-                'dvrCost': self.dvr_cost
-            }
+    def to_json(self):
+        package_info = {
+            'name': self.name,
+            'pricePerMonth': self.price,
+            'channels': self.channels,
+            'additionalChannels': self.additional_channels,
+            'numSimultaneousStreams': self.num_simultaneous_streams,
+            'numProfiles': self.num_profiles,
+            'supportedDevices': self.supported_devices,
+            'dvrSupport': self.dvr_support,
+            'dvrCost': self.dvr_cost
         }
-        return info
+        return package_info
