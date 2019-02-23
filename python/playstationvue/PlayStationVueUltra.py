@@ -21,7 +21,7 @@ class PlayStationVueUltra(StreamingPackage):
             zip_field.send_keys('60074')
             submit_button = self.web_driver.find_element_by_xpath("//input[@value='Update']")
             submit_button.click()
-            time.sleep(4)
+            time.sleep(3)
             # TODO:  sleeps suck, but can't figure this one out
 
             # Scrape data
