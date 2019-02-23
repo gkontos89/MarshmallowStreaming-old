@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from bs4 import BeautifulSoup
 import requests
 
@@ -15,7 +17,6 @@ class YouTubeTvPackage(StreamingPackage):
         network_table = network_matrix_header.find_next_sibling()
         for network_item in network_table.find_all('li'):
             channel = network_item.find('div')['aria-label']
-            print(channel)
             self.channels[channel] = True
 
     def scrape_for_additional_channels(self):
@@ -50,3 +51,8 @@ class YouTubeTvPackage(StreamingPackage):
         self.dvr_cost = 0
         self.dvr_support = 'Cloud DVR with no storage limits'
 
+
+if __name__ == '__main__':
+    y = YouTubeTvPackage()
+    data = y.scrape_for_data()
+    pprint(data)

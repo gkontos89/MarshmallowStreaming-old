@@ -1,5 +1,5 @@
 from Provider import Provider
-from YouTubeTvPackage import YouTubeTvPackage
+from youtubetv.YouTubeTvPackage import YouTubeTvPackage
 
 
 class YouTubeTv(Provider):
