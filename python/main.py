@@ -1,5 +1,6 @@
 import os
 
+from hulu.HuluTv import HuluTv
 from playstationvue.PlayStationVue import PlayStationVue
 from youtubetv.YouTubeTv import YouTubeTv
 import firebase_admin
@@ -28,6 +29,7 @@ ref = db.reference('cableStreamingProviders')
 providers = dict()
 providers['YouTube TV'] = YouTubeTv()
 providers['PlayStation Vue'] = PlayStationVue()
+providers['Hulu'] = HuluTv()
 for key, provider in providers.items():
     provider_json = provider.scrape_provider_info()
     ref.child(provider.name).set(provider_json)
