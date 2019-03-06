@@ -14,31 +14,29 @@ const db = admin.database();
  * post - /recommendations/{uid}: data
  * post - /clients/{clientUid}/questionnaires/{uid}: true
  */
-exports.questionnaireScanner = functions.database.ref('/unprocessedQuestionnaires/{uid}')
-    .onCreate((snapshot, context) => {
-        var uid = context.params.uid;
-        const questionnaireData = snapshot.val();
-        console.log("UID=", uid);
-        
-        // Compute recommendation
-        if (questionnaireData === "psvue") {
-            console.log("psvue");
-        } else {
-            console.log("youtube")
-        }
+exports.questionnaireScanner = functions.database.ref('/unprocessedQuestionnaires/{uid}').onCreate((snapshot, context) => {
+    var uid = context.params.uid;
+    const questionnaireData = snapshot.val();
+    console.log("UID=", uid);
+    
+    // Compute recommendation
+    if (questionnaireData === "psvue") {
+        console.log("psvue");
+    } else {
+        console.log("youtube")
+    }
 
 
-        // Store questionnaire in /questionnaires
-        var questionnaireRef = db.ref("questionnaires")
-        questionnaireRef.child(uid).set(questionnaireData);
+    // Store questionnaire in /questionnaires
+    var questionnaireRef = db.ref("questionnaires")
+    questionnaireRef.child(uid).set(questionnaireData);
 
-        
-        // Store recommendation in /recommendations
-        var recommendation = db.ref("recommendations")
-        return recommendation.child(uid).set("heyo")
+    
+    // Store recommendation in /recommendations
+    var recommendation = db.ref("recommendations")
+    return recommendation.child(uid).set("heyo")
 
-        // Delete unprocessedQuestionnaire entry
-                
+    // Delete unprocessedQuestionnaire entry                
 });
 
 /**
@@ -52,10 +50,9 @@ exports.questionnaireScanner = functions.database.ref('/unprocessedQuestionnaire
  * post - /marshmallowServices/{uid}: data
  * post - /businessMetrics/*applicable fields
  */
-exports.marshmallowServiceProcessing = functions.database.ref('/unprocessedMarshmallowServiceSubmittals')
-    .onCreate((snapshot, context) => {
+exports.marshmallowServiceProcessing = functions.database.ref('/unprocessedMarshmallowServiceSubmittals').onCreate((snapshot, context) => {
         
-})
+});
 
 /**
  * Original Service Capture Processing
@@ -67,5 +64,8 @@ exports.marshmallowServiceProcessing = functions.database.ref('/unprocessedMarsh
  * listens - /unprocessedOriginalServiceCaptures/{uid}: data
  * post - /originalServiceCaptures/{uid}: data
  * post - /clients/{clientUid}/originalServiceCapture/{uid}: true
- * post = /businessMetrics/*applicable fields
+ * post - /businessMetrics/*applicable fields
  */
+exports.originalCaptureServiceProcessing = functions.database.ref('/unprocessedOriginalServiceCaptures').onCreate((snapshot, context) => {
+    
+})

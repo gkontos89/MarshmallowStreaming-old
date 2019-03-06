@@ -36,6 +36,7 @@ class SlingBlue(StreamingPackage):
             raise e
 
     def scrape_for_simultaneous_streams(self):
+        # https://help.sling.com/en/support/solutions/articles/33000218992-can-i-watch-sling-tv-on-multiple-devices-at-the-same-time-
         self.num_simultaneous_streams = 3
 
     def scrape_for_num_profiles(self):

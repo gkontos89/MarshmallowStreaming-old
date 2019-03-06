@@ -1,5 +1,7 @@
 import os
+from pprint import pprint
 
+from directvnow.DirecTvNow import DirecTvNow
 from hulu.HuluTv import HuluTv
 from playstationvue.PlayStationVue import PlayStationVue
 from sling.Sling import Sling
@@ -19,8 +21,8 @@ if driver_path not in current_path:
 os.chmod(os.path.join(driver_path, 'chromedriver.exe'), 0o777)
 
 # Set up Firebase credentials
-credential = credentials.Certificate('marshmallowstreaming-f47a1-firebase-adminsdk-mxzpy-73d1519c44.json')
-firebase_admin.initialize_app(credential=credential, options= {
+credential = credentials.Certificate('marshmallowstreaming-f47a1-firebase-adminsdk-8vumk-d61e8ea8ad.json')
+firebase_admin.initialize_app(credential=credential, options={
     'databaseURL': 'https://marshmallowstreaming-f47a1.firebaseio.com/'
 })
 
@@ -32,8 +34,10 @@ providers['YouTube TV'] = YouTubeTv()
 providers['PlayStation Vue'] = PlayStationVue()
 providers['Hulu'] = HuluTv()
 providers['Sling'] = Sling()
+providers['DirecTvNow'] = DirecTvNow()
 for key, provider in providers.items():
     provider_json = provider.scrape_provider_info()
+    pprint(provider_json)
     ref.child(provider.name).set(provider_json)
 
 
