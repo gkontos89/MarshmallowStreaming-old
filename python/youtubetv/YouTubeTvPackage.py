@@ -19,7 +19,7 @@ class YouTubeTvPackage(StreamingPackage):
             channel = network_item.find('div')['aria-label']
             self.channels[channel] = True
 
-    def scrape_for_additional_channels(self):
+    def scrape_for_premium_channels(self):
         res = requests.get('https://tv.youtube.com/welcome/open/')
         soup = BeautifulSoup(res.text, 'html.parser')
         additional_networks_text = soup.find(name='p', text='Additional networks')
@@ -28,7 +28,7 @@ class YouTubeTvPackage(StreamingPackage):
             channel_div = network_item.find('div')
             channel_name = channel_div['aria-label']
             cost = channel_div.find_next_sibling().text
-            self.additional_channels[channel_name] = cost
+            self.premium_channels[channel_name] = cost
 
     def scrape_for_price(self):
         self.price = 40
@@ -50,6 +50,10 @@ class YouTubeTvPackage(StreamingPackage):
     def scrape_for_dvr_info(self):
         self.dvr_cost = 0
         self.dvr_support = 'Cloud DVR with no storage limits'
+
+    def scrape_for_add_ons(self):
+        pass
+
 
 
 if __name__ == '__main__':

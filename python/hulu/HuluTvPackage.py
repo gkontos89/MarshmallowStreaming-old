@@ -17,7 +17,7 @@ class HuluTvPackage(StreamingPackage):
         for channel_icon in network_list.find_all('img'):
             self.channels[channel_icon['alt']] = True
 
-    def scrape_for_additional_channels(self):
+    def scrape_for_premium_channels(self):
         res = requests.get('https://www.hulu.com/live-tv')
         soup = BeautifulSoup(res.text, 'html.parser')
         value_props = soup.find_all(name='div', attrs={'id': 'value-props'})[1]
@@ -26,7 +26,7 @@ class HuluTvPackage(StreamingPackage):
             prop_name = prop.find(name='img')['alt']
             details = prop.find_all(name='div')[2].text
             cost = details[details.find('$'): details.find('/month') + len('/month')]
-            self.additional_channels[prop_name] = cost
+            self.premium_channels[prop_name] = cost
 
     def scrape_for_price(self):
         res = requests.get('https://www.hulu.com/live-tv')
@@ -51,6 +51,9 @@ class HuluTvPackage(StreamingPackage):
     def scrape_for_dvr_info(self):
         self.dvr_support = True
         self.dvr_cost = 15
+
+    def scrape_for_add_ons(self):
+        pass
 
 
 if __name__ == '__main__':

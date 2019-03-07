@@ -13,12 +13,21 @@ class DirecTvNow(Provider):
         super().__init__("DirecTV Now")
 
     def scrape_provider_info(self):
-        res = requests.get('https://cdn.directv.com/content/dam/dtv/prod/website_directvnow/modals/compare-packages.html')
-        soup = BeautifulSoup(res.text, 'html.parser')
-        header = soup.find(name='div', attrs={'class': 'row header'})
+        package_res = requests.get('https://cdn.directv.com/content/dam/dtv/prod/website_directvnow/modals/compare-packages.html')
+        package_soup = BeautifulSoup(package_res.text, 'html.parser')
+
+        # Grab supported devices separately
+        device_res = requests.get('https://cdn.directv.com/content/dam/dtv/prod/website_directvnow/modals/devices.html')
+        device_soup = BeautifulSoup(device_res.text, 'html.parser')
+        device_tags = device_soup.find_all(name='h2')
+        supported_devices = dict()
+        for d in device_tags:
+            supported_devices[d.text] = True
+
+        header = package_soup.find(name='div', attrs={'class': 'row header'})
         packages = header.find_all(name='div', attrs={'class': 'col-custom col-xs-3 col-sm-2'})
         packages.insert(0, header.find(name='div', attrs={'class': 'col-custom col-xs-3 col-sm-2 first'}))
-        channel_rows = soup.find_all(name='div', attrs={'class': 'row channel'})
+        channel_rows = package_soup.find_all(name='div', attrs={'class': 'row channel'})
         idx = 0
         for p in packages:
             name = p.find(name='div', attrs={'class': 'title'}).text
@@ -41,6 +50,8 @@ class DirecTvNow(Provider):
                 if included_ids[idx]['class'][0] == 'checked':
                     d_package.channels[channel_name] = True
 
+            # Supported devices
+            d_package.supported_devices = supported_devices
             self.packages[d_package.name] = d_package
             idx += 0
 

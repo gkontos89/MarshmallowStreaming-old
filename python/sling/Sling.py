@@ -10,6 +10,3 @@ class Sling(Provider):
         self.packages['Sling Blue'] = SlingBlue()
         self.packages['Sling Orange'] = SlingOrange()
         self.packages['Sling Orange And Blue'] = SlingOrangeAndBlue()
-
-
-

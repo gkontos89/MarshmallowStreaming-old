@@ -9,10 +9,10 @@ from StreamingPackage import StreamingPackage
 class SlingOrangeAndBlue(StreamingPackage):
     def __init__(self):
         super().__init__("Sling Orange And Blue")
-        self.web_driver = webdriver.Chrome()
 
     def scrape_for_channels(self):
         try:
+            self.web_driver = webdriver.Chrome()
             self.web_driver.get('https://www.sling.com/#dyn-grid-plan-tab-3-y-1')
             channel_list = self.web_driver.find_element_by_id('channelList')
             for item in channel_list.find_elements_by_tag_name('li'):
@@ -22,7 +22,7 @@ class SlingOrangeAndBlue(StreamingPackage):
             self.web_driver.close()
             raise e
 
-    def scrape_for_additional_channels(self):
+    def scrape_for_premium_channels(self):
         pass
 
     def scrape_for_price(self):
@@ -56,6 +56,29 @@ class SlingOrangeAndBlue(StreamingPackage):
         # https://www.sling.com/value/dvr
         self.dvr_cost = 5
         self.dvr_support = '50 hours of recording'
+
+    def scrape_for_add_ons(self):
+        self.add_ons = {
+            'Sling Orange': {
+                'cost': 5,
+                'channels': {
+                    'NBA TV': True,
+                    'ESPN U': True,
+                    'NHL Network': True,
+                    'SEC Network': True,
+                    'ESPNEWS': True,
+                    'Tennis Channel': True,
+                }
+            },
+            'Sling Blue': {
+                'Red Zone': True,
+                'NBA TV': True,
+                'Golf': True,
+                'NHL Network': True,
+                'Tennis Channel': True,
+                'Olympic Channel': True,
+            }
+        }
 
 
 if __name__ == '__main__':

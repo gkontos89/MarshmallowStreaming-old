@@ -2,6 +2,7 @@ class Provider:
     def __init__(self, name):
         self.name = name
         self.packages = dict()
+        self.add_ons = dict()
 
     def scrape_provider_info(self):
         for package_key, package in self.packages.items():

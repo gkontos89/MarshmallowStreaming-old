@@ -9,10 +9,10 @@ from StreamingPackage import StreamingPackage
 class PlayStationVueCore(StreamingPackage):
     def __init__(self):
         super().__init__('Core')
-        self.web_driver = webdriver.Chrome()
 
     def scrape_for_channels(self):
         try:
+            self.web_driver = webdriver.Chrome()
             self.web_driver.get('https://www.playstation.com/en-us/network/vue/channels/?dl=ultra')
             # Set location to Chicago
             location_selector = self.web_driver.find_element_by_xpath("//span[@class='item location ']")
@@ -39,8 +39,12 @@ class PlayStationVueCore(StreamingPackage):
             self.web_driver.close()
             raise e
 
-    def scrape_for_additional_channels(self):
-        pass
+    def scrape_for_premium_channels(self):
+        premium_channel_containers = self.web_driver.find_elements_by_class_name('tile-inner')
+        for container in premium_channel_containers:
+            channel_name = container.find_element_by_tag_name('img').get_attribute('alt').replace(' logo', '')
+            price = container.find_element_by_class_name('planPrice').text
+            self.premium_channels[channel_name] = price
 
     def scrape_for_price(self):
         self.price = 49.99
@@ -68,6 +72,18 @@ class PlayStationVueCore(StreamingPackage):
         self.dvr_cost = 0
         self.dvr_support = '500 episodes, stored for 28 days'
 
+    def scrape_for_add_ons(self):
+        self.add_ons = {
+            'Sports Pack': {
+                'cost': 10,
+                'channels': {
+                    'Red Zone': True,
+                    'ESPN Classic': True,
+                    'NBCSN': True,
+                }
+            }
+        }
+
 
 if __name__ == '__main__':
     driver_path = os.path.join(os.getcwd(), '../', 'drivers')
@@ -79,6 +95,6 @@ if __name__ == '__main__':
     # Update permissions on the drivers
     os.chmod(os.path.join(driver_path, 'chromedriver.exe'), 0o777)
 
-    pva = PlayStationVueUltra()
+    pva = PlayStationVueCore()
     data = pva.scrape_for_data()
     pprint(data)

@@ -19,7 +19,8 @@ class StreamingPackage:
         self.supported_devices = {}
         self.dvr_support = False
         self.dvr_cost = None
-        self.additional_channels = {}
+        self.premium_channels = {}
+        self.add_ons = {}
         self.web_driver = None
 
     def get_web_driver_wait_handle(self, driver=None, element_type=By.ID, element_string=None, multiple=False, timeout=15):
@@ -37,7 +38,7 @@ class StreamingPackage:
     def scrape_for_channels(self):
         raise NotImplementedError()
 
-    def scrape_for_additional_channels(self):
+    def scrape_for_premium_channels(self):
         raise NotImplementedError()
 
     def scrape_for_price(self):
@@ -55,14 +56,18 @@ class StreamingPackage:
     def scrape_for_dvr_info(self):
         raise NotImplementedError()
 
+    def scrape_for_add_ons(self):
+        raise NotImplementedError()
+
     def scrape_for_data(self):
         self.scrape_for_channels()
-        self.scrape_for_additional_channels()
+        self.scrape_for_premium_channels()
         self.scrape_for_price()
         self.scrape_for_simultaneous_streams()
         self.scrape_for_num_profiles()
         self.scrape_for_support_devices()
         self.scrape_for_dvr_info()
+        self.scrape_for_add_ons()
         if self.web_driver is not None:
             self.web_driver.close()
 
@@ -73,11 +78,12 @@ class StreamingPackage:
             'name': self.name,
             'pricePerMonth': self.price,
             'channels': self.channels,
-            'additionalChannels': self.additional_channels,
+            'premiumChannels': self.premium_channels,
             'numSimultaneousStreams': self.num_simultaneous_streams,
             'numProfiles': self.num_profiles,
             'supportedDevices': self.supported_devices,
             'dvrSupport': self.dvr_support,
-            'dvrCost': self.dvr_cost
+            'dvrCost': self.dvr_cost,
+            'addOns': self.add_ons
         }
         return package_info
