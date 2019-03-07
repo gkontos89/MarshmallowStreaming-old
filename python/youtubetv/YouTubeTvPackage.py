@@ -13,6 +13,7 @@ class YouTubeTvPackage(StreamingPackage):
     def scrape_for_channels(self):
         res = requests.get('https://tv.youtube.com/welcome/open/')
         soup = BeautifulSoup(res.text, 'html.parser')
+        soup.te
         network_matrix_header = soup.find(name='div', attrs={'class': 'network-matrix__header'})
         network_table = network_matrix_header.find_next_sibling()
         for network_item in network_table.find_all('li'):
