@@ -3,6 +3,7 @@ from pprint import pprint
 
 from directvnow.DirecTvNow import DirecTvNow
 from hulu.HuluTv import HuluTv
+from philo.Philo import Philo
 from playstationvue.PlayStationVue import PlayStationVue
 from sling.Sling import Sling
 from youtubetv.YouTubeTv import YouTubeTv
@@ -35,6 +36,7 @@ providers['PlayStation Vue'] = PlayStationVue()
 providers['Hulu'] = HuluTv()
 providers['Sling'] = Sling()
 providers['DirecTvNow'] = DirecTvNow()
+providers['Philo'] = Philo()
 for key, provider in providers.items():
     provider_json = provider.scrape_provider_info()
     pprint(provider_json)
